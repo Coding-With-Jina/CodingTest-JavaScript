@@ -1,4 +1,4 @@
-# CodingTestStudy with JavaScript
+# CodingTestStudy with JavaScript(baekjoon)
 ### 1. 문자열
 [1157](http://coding-with-jina.tistory.com/254), 
 [9046](https://coding-with-jina.tistory.com/251)
