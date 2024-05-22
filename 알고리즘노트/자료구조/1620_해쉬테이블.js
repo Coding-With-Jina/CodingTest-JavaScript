@@ -24,7 +24,10 @@ N과 M은 1보다 크거나 같고, 100,000보다 작거나 같은 자연수인�
 //2번째줄부터 N줄까지 포켓몬노트에 순서대로 저장하고 
 //N+1줄부터 M개까지 나오는 문제에 포켓몬이 나오면 번호를, 번호가 나오면 포켓몬을 출력
 
-/* 시간초과나옴
+/* 
+시간초과나옴
+>> 배열을 순회하는 반복문은 성능에 영향
+
 const input = require('fs').readFileSync('text.txt').toString().trim().split("\r\n");
 const [N, M] = input.shift().split(" ").map(Number);//포켓몬의 개수 N(26), 내가 맞춰야 하는 문제의 개수 M(5)
 
@@ -47,6 +50,9 @@ input.splice(0,N);//포켓몬노트에 있는건 없애고 문제만 남기기
 
 let result = [];
 
+
+>> 반복문은 각 반복에서 isNaN을 호출하고 poketmonNote 배열에서 값을 찾기 위해 find를 호출
+>> 이걸 한번의 반복으로 해결해야함
 function findId(name){//문자일 경우 이름 받아서 번호 찾기
     let poketmon = poketmonNote.find(poketmon => poketmon.name === name);
     return poketmon ? poketmon.id:null;
@@ -64,14 +70,18 @@ for(let i = 0; i<M;i++){
 console.log(result.join("\n"));
 */
 
+//
+
+
 const fs = require('fs');
 const input = fs.readFileSync('text.txt').toString().trim().split("\r\n");
 const [N, M] = input.shift().split(" ").map(Number);
 
+//console.log(input); //찾아야하는 포켓몬과 번호만 남음
 const poketmonNote = [];
-const poketmonMap = {}; // ID를 키로 사용하여 포켓몬에 대한 빠른 접근을 위한 맵
+const poketmonMap = {}; // 배열 대신 ID를 키로 사용하여 포켓몬에 대한 빠른 접근을 위한 객체
 
-for (let i = 0; i < N; i++) {
+for (let i = 0; i < N; i++) {//번호생성해서 포켓몬과 매칭해서 저장
     const name = input[i];
     poketmonNote.push(name);
     poketmonMap[name] = i + 1;
@@ -80,11 +90,11 @@ for (let i = 0; i < N; i++) {
 const result = [];
 
 for (let i = N; i < N + M; i++) {
-    const query = input[i];
-    if (!isNaN(query)) { // 숫자일 경우
-        result.push(poketmonNote[query - 1]);
+    const findPoketmon = input[i];
+    if (!isNaN(findPoketmon)) { // 숫자일 경우
+        result.push(poketmonNote[findPoketmon - 1]);
     } else { // 문자일 경우
-        result.push(poketmonMap[query]);
+        result.push(poketmonMap[findPoketmon]);
     }
 }
 
